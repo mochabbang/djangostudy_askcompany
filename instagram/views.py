@@ -1,9 +1,9 @@
 from http.client import HTTPResponse
 from pyexpat import model
-from django.http import HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse
 from django.core.checks import messages
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, DetailView
 from .models import Post
 
 post_list = ListView.as_view(model=Post)
@@ -21,10 +21,13 @@ post_list = ListView.as_view(model=Post)
 #         'q': q
 #     })
 
-    
-def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    response = HttpResponse()
-    response.write("Hellow World")
-    response.write("Hellow World")
-    response.write("Hellow World")
-    return response
+post_detail = DetailView.as_view(model=Post)   
+# def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+#     post = get_object_or_404(Post, pk=pk)
+#     #try:
+#     #    post = Post.objects.get(pk=pk)  # Post.DoesNotExists 예외
+#     #except:
+#     #    raise Http404
+#     return render(request, 'instagram/post_detail.html', {
+#         'post': post
+#     })
