@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView
 from .models import Post
 
-post_list = ListView.as_view(model=Post)
+post_list = ListView.as_view(model=Post, paginate_by=10)
+
 
 # Create your views here.
 # def post_list(request):
@@ -21,7 +22,21 @@ post_list = ListView.as_view(model=Post)
 #         'q': q
 #     })
 
-post_detail = DetailView.as_view(model=Post)   
+# post_detail = DetailView.as_view(model=Post,
+#                                  queryset=Post.objects.filter(is_public=True))   
+
+class PostDetailView(DetailView):
+    model = Post
+  # queryset = Post.objects.filter(is_public=True)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(is_public=True)        
+        return qs
+
+post_detail = PostDetailView.as_view()
+
 # def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
 #     post = get_object_or_404(Post, pk=pk)
 #     #try:
