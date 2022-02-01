@@ -1,15 +1,24 @@
 from http.client import HTTPResponse
 from pyexpat import model
 from django.http import Http404, HttpRequest, HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.core.checks import messages
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView
 from .models import Post
 
-post_list = ListView.as_view(model=Post, paginate_by=10)
+#post_list = ListView.as_view(model=Post, paginate_by=10)
 
+@method_decorator(login_required, name='dispatch')
+class PostListView(ListView):
+      model = Post
+      paginate_by = 10
+
+post_list = PostListView.as_view()
 
 # Create your views here.
+# @login_required
 # def post_list(request):
 #     qs = Post.objects.all()
     
