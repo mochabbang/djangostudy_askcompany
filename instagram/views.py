@@ -1,11 +1,14 @@
+from atexit import register
 from http.client import HTTPResponse
 from pyexpat import model
+from django.forms import DateField
 from django.http import Http404, HttpRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.urls import register_converter
 from django.utils.decorators import method_decorator
 from django.core.checks import messages
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, ArchiveIndexView, YearArchiveView
 from .models import Post
 
 #post_list = ListView.as_view(model=Post, paginate_by=10)
@@ -55,3 +58,6 @@ post_detail = PostDetailView.as_view()
 #     return render(request, 'instagram/post_detail.html', {
 #         'post': post
 #     })
+
+post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at', paginate_by=10)
+post_archive_year = YearArchiveView.as_view(model=Post, date_field='created_at', make_object_list=True)
