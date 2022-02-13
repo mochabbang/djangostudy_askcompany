@@ -7,11 +7,25 @@ from django.contrib.auth.decorators import login_required
 from django.urls import register_converter
 from django.utils.decorators import method_decorator
 from django.core.checks import messages
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, DetailView, ArchiveIndexView, YearArchiveView
 from .models import Post
+from .forms import PostForm
 
 #post_list = ListView.as_view(model=Post, paginate_by=10)
+
+def post_new(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            return redirect(post)
+    else:
+        form = PostForm()
+    
+    return render(request, 'instagram/post_form.html', {
+        'form': form
+    })
 
 @method_decorator(login_required, name='dispatch')
 class PostListView(ListView):
@@ -34,7 +48,6 @@ post_list = PostListView.as_view()
 #         'q': q
 #     })
 
-<<<<<<< HEAD
     
 def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
     response = HttpResponse()
@@ -45,7 +58,6 @@ def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
 
 def archives_year(request, year):
     return HttpResponse(f"{year}년 achives")
-=======
 # post_detail = DetailView.as_view(model=Post,
 #                                  queryset=Post.objects.filter(is_public=True))   
 
@@ -73,4 +85,3 @@ post_detail = PostDetailView.as_view()
 
 post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at', paginate_by=10)
 post_archive_year = YearArchiveView.as_view(model=Post, date_field='created_at', make_object_list=True)
->>>>>>> 54914a831856eb86f8224550a5ca583e5ea3b66b
