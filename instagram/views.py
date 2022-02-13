@@ -34,6 +34,18 @@ post_list = PostListView.as_view()
 #         'q': q
 #     })
 
+<<<<<<< HEAD
+    
+def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+    response = HttpResponse()
+    response.write("Hellow World")
+    response.write("Hellow World")
+    response.write("Hellow World")
+    return response
+
+def archives_year(request, year):
+    return HttpResponse(f"{year}년 achives")
+=======
 # post_detail = DetailView.as_view(model=Post,
 #                                  queryset=Post.objects.filter(is_public=True))   
 
@@ -61,3 +73,4 @@ post_detail = PostDetailView.as_view()
 
 post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at', paginate_by=10)
 post_archive_year = YearArchiveView.as_view(model=Post, date_field='created_at', make_object_list=True)
+>>>>>>> 54914a831856eb86f8224550a5ca583e5ea3b66b
