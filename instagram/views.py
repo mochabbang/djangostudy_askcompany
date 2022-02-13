@@ -16,7 +16,7 @@ from .models import Post
 @method_decorator(login_required, name='dispatch')
 class PostListView(ListView):
       model = Post
-      paginate_by = 10
+      paginate_by = 100
 
 post_list = PostListView.as_view()
 
